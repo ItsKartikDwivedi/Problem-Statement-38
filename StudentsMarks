@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from google.colab import files
+uploaded = files.upload()
+
+df = pd.read_csv('PS38_Dataset_38.csv')
+
+df.head()
+
+
+print(df.info())
+print(df.describe())
+
+print(df.isnull().sum())
+
+df = df.dropna()  
+
+df = df.drop_duplicates()
+
+df.head()
+
+
+numeric_cols = df.select_dtypes(include=np.number)
+
+mean_values = np.mean(numeric_cols, axis=0)
+median_values = np.median(numeric_cols, axis=0)
+std_values = np.std(numeric_cols, axis=0)
+
+print("Mean:\n", mean_values)
+print("Median:\n", median_values)
+print("Standard Deviation:\n", std_values)
+
+print(df.sum(numeric_only=True))
+
+print(df.corr())
+
+numeric_cols.mean().plot(kind='bar')
+plt.title("Average Values of Features")
+plt.xlabel("Features")
+plt.ylabel("Mean Value")
+plt.xticks(rotation=45)
+plt.show()
+
+df.hist(figsize=(10,8))
+plt.suptitle("Distribution of Features")
+plt.show()
+
+df.to_csv("cleaned_dataset.csv", index=False)
